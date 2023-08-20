@@ -1,0 +1,37 @@
+name: Deploy Discord Bot
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Deploy to Heroku
+        run: |
+          git config --global user.email "your@email.com"
+          git config --global user.name "Your Name"
+          echo -e "machine api.heroku.com\n  login your-heroku-email\n  password your-heroku-api-key\nmachine git.heroku.com\n  login your-heroku-email\n  password your-heroku-api-key" > ~/.netrc
+          npm run deploy  # Replace with your deployment command
+
+# Add your environment variables (secrets) to Heroku
+# Make sure to replace "YOUR_SECRET_NAME" with your actual secret name
+      - name: Set Heroku Environment Variables
+        run: |
+          heroku config:set YOUR_SECRET_NAME=$YOUR_SECRET_NAME
+        env:
+          YOUR_SECRET_NAME: ${{ secrets.YOUR_SECRET_NAME }}
