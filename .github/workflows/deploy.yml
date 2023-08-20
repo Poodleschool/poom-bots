@@ -21,17 +21,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Deploy to Heroku
+      - name: Deploy to Railway
         run: |
-          git config --global user.email "your@email.com"
-          git config --global user.name "Your Name"
-          echo -e "machine api.heroku.com\n  login your-heroku-email\n  password your-heroku-api-key\nmachine git.heroku.com\n  login your-heroku-email\n  password your-heroku-api-key" > ~/.netrc
           npm run deploy  # Replace with your deployment command
 
-# Add your environment variables (secrets) to Heroku
+# Add your environment variables (secrets) to Railway
 # Make sure to replace "YOUR_SECRET_NAME" with your actual secret name
-      - name: Set Heroku Environment Variables
+      - name: Set Railway Environment Variables
         run: |
-          heroku config:set YOUR_SECRET_NAME=$YOUR_SECRET_NAME
+          railway env add YOUR_SECRET_NAME $YOUR_SECRET_NAME --no-restart
         env:
           YOUR_SECRET_NAME: ${{ secrets.YOUR_SECRET_NAME }}
